@@ -1,6 +1,9 @@
 import 'package:champs2022rank1ng/src/configs/z_champs_configs.dart';
+import 'package:champs2022rank1ng/src/widgets/common/countries_list.dart';
+import 'package:champs2022rank1ng/src/widgets/common/my_custom_date_picker.dart';
 import 'package:champs2022rank1ng/src/widgets/z_champs_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/champs/homepage";
@@ -11,6 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    setState(() {});
+  }
+
+  DateTime _selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -21,6 +30,69 @@ class _HomePageState extends State<HomePage> {
         title: const Text(
           'Matches',
           style: kAppbarTextStyle,
+        ),
+        bottom: PreferredSize(
+          preferredSize: size * 0.1,
+          child: Container(
+            color: greySecond,
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Container(
+                    // color: greyFirst,
+                    child: TextButton(
+                      child: const Text(
+                        "Countries >",
+                        style: kAppbarTextStyle,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => CountriesList(
+                              onTap: (country){
+                                debugPrint("The selected Country is $country");
+                              },
+                            ));
+                      },
+                    ),
+                  )),
+                  const VerticalDivider(
+                    color: whiteColor,
+                  ),
+                  Expanded(
+                      child: Container(
+                    // color: greyFirst,
+                    child: TextButton(
+                      child: const Text(
+                        "Date >",
+                        style: kAppbarTextStyle,
+                      ),
+                      onPressed: () async {
+                        debugPrint('Showing date');
+                        await showDateMyCustomePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.parse("2022-06-27"),
+                        ).then(
+                          (value) => {
+                            debugPrint(_selectedDate.toIso8601String()),
+                            if (value != null)
+                              {
+                                setState(() {
+                                  _selectedDate = value;
+                                })
+                              }
+                          },
+                        );
+                      },
+                    ),
+                  )),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -39,63 +111,10 @@ class _HomePageState extends State<HomePage> {
               .toList(),
         ),
       ),
-      bottomNavigationBar: CustomBottomAppBar(),
-    );
-  }
-}
-
-class CustomBottomAppBar extends StatelessWidget {
-  const CustomBottomAppBar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      color: greyFourth,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(color: greyFourth),
-              child: TextButton(
-                onPressed: () {},
-                child: const Icon(
-                  Icons.home,
-                ),
-              ),
-            ),
-          ),
-          const VerticalDivider(
-            color: greyColor,
-          ),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(color: greyFourth),
-              child: TextButton(
-                onPressed: () {},
-                child: const Icon(
-                  Icons.home,
-                ),
-              ),
-            ),
-          ),
-          const VerticalDivider(
-            color: greyColor,
-          ),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(color: greyFourth),
-              child: TextButton(
-                onPressed: () {},
-                child: const Icon(
-                  Icons.home,
-                ),
-              ),
-            ),
-          ),
-        ],
+      bottomNavigationBar: CustomBottomAppBar(
+        onSelect: (index) {
+          debugPrint("Selected index $index");
+        },
       ),
     );
   }

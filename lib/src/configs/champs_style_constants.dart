@@ -12,3 +12,11 @@ const kTimeDateTextStyle = TextStyle(
   color: Colors.grey,
   fontFamily: "Open Sans",
 );
+
+final kBottomAppBarButtonStyle = TextButton.styleFrom(
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(60.0),
+    ),
+  ),
+);
