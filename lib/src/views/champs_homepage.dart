@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    double height = AppBar().preferredSize.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: greyFourth,
@@ -50,10 +51,11 @@ class _HomePageState extends State<HomePage> {
                         showDialog(
                             context: context,
                             builder: (context) => CountriesList(
-                              onTap: (country){
-                                debugPrint("The selected Country is $country");
-                              },
-                            ));
+                                  onTap: (country) {
+                                    debugPrint(
+                                        "The selected Country is $country");
+                                  },
+                                ));
                       },
                     ),
                   )),
@@ -77,12 +79,12 @@ class _HomePageState extends State<HomePage> {
                           lastDate: DateTime.parse("2022-06-27"),
                         ).then(
                           (value) => {
-                            debugPrint(_selectedDate.toIso8601String()),
                             if (value != null)
                               {
                                 setState(() {
                                   _selectedDate = value;
-                                })
+                                }),
+                                debugPrint(_selectedDate.toIso8601String()),
                               }
                           },
                         );
@@ -110,11 +112,6 @@ class _HomePageState extends State<HomePage> {
               )
               .toList(),
         ),
-      ),
-      bottomNavigationBar: CustomBottomAppBar(
-        onSelect: (index) {
-          debugPrint("Selected index $index");
-        },
       ),
     );
   }

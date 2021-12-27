@@ -7,7 +7,10 @@
         {
             "name": "champs2022rank1ng",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         },
         {
             "name": "champs2022rank1ng (profile mode)",

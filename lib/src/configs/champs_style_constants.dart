@@ -20,3 +20,15 @@ final kBottomAppBarButtonStyle = TextButton.styleFrom(
     ),
   ),
 );
+
+const kLeagueNameLabelStyle = TextStyle(
+  color: whiteColor,
+  fontSize: 18.0,
+  fontWeight: FontWeight.w400,
+  fontFamily: "Open Sans",
+);
+
+const kLeagueGameTimeLabelStyle = TextStyle(
+  color: whiteColor,
+  fontFamily: "Open Sans",
+);
