@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                 UpcomingMatchStatus.idle) {
               List<UpComingGame> _games = state.matchReponse.data;
 
-              return Column(
+              return _games.isEmpty? const Center(child: Text("No Content"),): Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _games
                     .map(
