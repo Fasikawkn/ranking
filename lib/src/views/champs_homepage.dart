@@ -1,8 +1,14 @@
 import 'package:champs2022rank1ng/src/configs/z_champs_configs.dart';
+import 'package:champs2022rank1ng/src/controllers/z_champs_controllers.dart';
+import 'package:champs2022rank1ng/src/models/champs_pregame_model.dart';
+import 'package:champs2022rank1ng/src/models/chmaps_custome_models.dart';
+import 'package:champs2022rank1ng/src/views/z_champs_views.dart';
 import 'package:champs2022rank1ng/src/widgets/common/countries_list.dart';
 import 'package:champs2022rank1ng/src/widgets/common/my_custom_date_picker.dart';
+import 'package:champs2022rank1ng/src/widgets/custom_shimer.dart';
 import 'package:champs2022rank1ng/src/widgets/z_champs_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +22,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {});
+  }
+
+  List<Widget> _buildShimmer() {
+    return [1, 2, 3, 4]
+        .map((widget) => const CustomShimmer.rectangular(height: 12))
+        .toList();
   }
 
   DateTime _selectedDate = DateTime.now();
@@ -44,18 +56,17 @@ class _HomePageState extends State<HomePage> {
                     // color: greyFirst,
                     child: TextButton(
                       child: const Text(
-                        "Countries >",
+                        "Country   >",
                         style: kAppbarTextStyle,
                       ),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => CountriesList(
-                                  onTap: (country) {
-                                    debugPrint(
-                                        "The selected Country is $country");
-                                  },
-                                ));
+                      onPressed: () async {
+                        final countryCode = await showDialog(
+                          context: context,
+                          builder: (context) => const CountriesList(),
+                        );
+                        await Provider.of<UpcomingMatchModel>(context,
+                                listen: false)
+                            .filterMatchesByCountry(countryCode, context);
                       },
                     ),
                   )),
@@ -71,23 +82,20 @@ class _HomePageState extends State<HomePage> {
                         style: kAppbarTextStyle,
                       ),
                       onPressed: () async {
-                        debugPrint('Showing date');
-                        await showDateMyCustomePicker(
+                        DateTime dateTime = DateTime.now();
+                        final _response = await showDateMyCustomePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.parse("2022-06-27"),
-                        ).then(
-                          (value) => {
-                            if (value != null)
-                              {
-                                setState(() {
-                                  _selectedDate = value;
-                                }),
-                                debugPrint(_selectedDate.toIso8601String()),
-                              }
-                          },
+                          initialDate: dateTime,
+                          firstDate:
+                              dateTime.subtract(const Duration(days: 30)),
+                          lastDate: dateTime.add(const Duration(days: 30)),
                         );
+                        String _matchDate =
+                            '${_response!.year}${_response.month}${_response.day}';
+                        print("The selected date is $_matchDate");
+                        await Provider.of<UpcomingMatchModel>(context,
+                                listen: false)
+                            .getUpcomingMatches(_response.toString());
                       },
                     ),
                   )),
@@ -98,19 +106,40 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: teams
-              .map(
-                (team) => ChampsTeamLabel(
-                    teamOneName: team['teamOneName']!,
-                    teamOneOdd: team['teamOneOdd']!,
-                    teamTwoName: team['teamTwoName']!,
-                    teamTwoOdd: team['teamTwoOdd']!,
-                    teamsPlayDate: team['teamsPlayDate']!,
-                    teamsPlayTime: team['teamsPlayTime']!),
-              )
-              .toList(),
+        child: Consumer<UpcomingMatchModel>(
+          builder: (context, state, child) {
+            if (state.matchReponse.modelStatus == UpcomingMatchStatus.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state.matchReponse.modelStatus ==
+                UpcomingMatchStatus.idle) {
+              List<UpComingGame> _games = state.matchReponse.data;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _games
+                    .map(
+                      (game) => GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChampsPlayTeamsDetail(
+                                    game: game,
+                                  )));
+                        },
+                        child: ChampsTeamLabel(
+                          game: game,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              );
+            } else {
+              return Center(
+                child: Text(state.matchReponse.error!.message),
+              );
+            }
+          },
         ),
       ),
     );

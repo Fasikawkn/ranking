@@ -1,16 +1,27 @@
 import 'package:champs2022rank1ng/src/configs/z_champs_configs.dart';
+import 'package:champs2022rank1ng/src/controllers/z_champs_controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
-class ChampsTeamOddLabel extends StatelessWidget {
-  const ChampsTeamOddLabel({Key? key, required this.name, required this.odd})
-      : super(key: key);
+class ChampsTeamOddLabel extends StatefulWidget {
+  const ChampsTeamOddLabel({
+    Key? key,
+    required this.name,
+    required this.odd,
+  }) : super(key: key);
 
   final String name;
-  final String odd;
+  final Widget odd;
 
   @override
+  State<ChampsTeamOddLabel> createState() => _ChampsTeamOddLabelState();
+}
+
+class _ChampsTeamOddLabelState extends State<ChampsTeamOddLabel> {
+  late UpcomingMatchModel matchModel;
+  @override
   Widget build(BuildContext context) {
+    matchModel = Provider.of<UpcomingMatchModel>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return Row(
       children: [
@@ -21,16 +32,13 @@ class ChampsTeamOddLabel extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                name,
+                widget.name,
                 style: kAppbarTextStyle.copyWith(color: Colors.black),
               ),
               SizedBox(
                 width: size.width * 0.06,
               ),
-              Text(
-                odd,
-                style: kAppbarTextStyle.copyWith(color: Colors.black),
-              )
+             widget.odd,
             ],
           ),
         )

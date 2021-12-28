@@ -1,36 +1,16 @@
+import 'package:champs2022rank1ng/src/configs/countries.dart';
 import 'package:champs2022rank1ng/src/configs/z_champs_configs.dart';
 import 'package:flutter/material.dart';
 
 class CountriesList extends StatefulWidget {
-  const CountriesList({required this.onTap, Key? key}) : super(key: key);
-  final Function(String country) onTap;
+  const CountriesList({Key? key}) : super(key: key);
 
   @override
   State<CountriesList> createState() => _CountriesListState();
 }
 
 class _CountriesListState extends State<CountriesList> {
-  final List<String> _countries = [
-    'Country',
-    'England',
-    'Spain',
-    'Italy',
-    'Japan',
-    'Russia',
-    'Ukraine',
-    'Portugal',
-    'Germany',
-    'England1',
-    'Spain1',
-    'Italy1',
-    'Japan1',
-    'Russia1',
-    'Ukraine1',
-    'Portugal1',
-    'Germany1',
-  ];
-
-  String _indexValue = "Country";
+  String _indexValue = "kco";
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +27,21 @@ class _CountriesListState extends State<CountriesList> {
           thickness: 15.0,
           child: SingleChildScrollView(
             child: Column(
-              children: _countries
+              children: countries.entries
                   .map((country) => CountriesItem(
-                        name: country,
-                        value: country,
-                        color:
-                            _indexValue == country ? primaryColor : greySecond,
-                        onTap: (value) {
+                        name: country.key,
+                        value: country.value,
+                        color: _indexValue == country.value
+                            ? primaryColor
+                            : greySecond,
+                        onTap: (value) async {
                           setState(() {
                             _indexValue = value;
                           });
-                          widget.onTap(value);
+                          Future.delayed(const Duration(milliseconds: 100));
+                         if(country.value != 'kco'){
+                            Navigator.of(context).pop(value);
+                         }
                         },
                       ))
                   .toList(),

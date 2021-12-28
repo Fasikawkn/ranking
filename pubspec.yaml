@@ -42,6 +42,12 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   expandable: ^5.0.1
   syncfusion_flutter_charts: ^19.4.38
+  provider: ^6.0.1
+  http: ^0.13.4
+  flutter_spinkit: ^5.1.0
+  shimmer: ^2.0.0
+  cached_network_image: ^3.2.0
+  sqflite: ^2.0.1
 
 dev_dependencies:
   flutter_test:

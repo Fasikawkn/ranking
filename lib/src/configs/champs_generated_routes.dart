@@ -14,20 +14,20 @@ class AppRoute {
         settings: settings,
       );
     }
-    else if (settings.name == ChampsPlayTeamsDetail.routeName) {
-      return PageTransition(
-        child: const ChampsPlayTeamsDetail(),
-        type: PageTransitionType.leftToRight,
-        settings: settings,
-      );
-    }
-     else if (settings.name == ChampsTeamDetail.routeName) {
-      return PageTransition(
-        child: const ChampsTeamDetail(),
-        type: PageTransitionType.leftToRight,
-        settings: settings,
-      );
-    }
+    // else if (settings.name == ChampsPlayTeamsDetail.routeName) {
+    //   return PageTransition(
+    //     child: const ChampsPlayTeamsDetail(),
+    //     type: PageTransitionType.leftToRight,
+    //     settings: settings,
+    //   );
+    // }
+    //  else if (settings.name == ChampsTeamDetail.routeName) {
+    //   return PageTransition(
+    //     child: const ChampsTeamDetail(),
+    //     type: PageTransitionType.leftToRight,
+    //     settings: settings,
+    //   );
+    // }
     return  PageTransition(
         child: const HomePage(),
         type: PageTransitionType.leftToRight,

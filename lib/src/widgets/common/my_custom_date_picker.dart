@@ -477,7 +477,7 @@ class _DatePickerDialogState extends State<DatePickerDialog>
   }
 
   void _handleDateChanged(DateTime date) {
-    debugPrint("THe selected date is ${date.toIso8601String()}");
+    
     setState(() {
       _selectedDate.value = date;
     });

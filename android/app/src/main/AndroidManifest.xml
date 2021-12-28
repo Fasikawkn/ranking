@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.champs2022rank1ng">
+     <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
         android:label="champs2022rank1ng"
         android:icon="@mipmap/ic_launcher">
