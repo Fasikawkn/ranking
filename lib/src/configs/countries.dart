@@ -1,5 +1,5 @@
 const Map<String, dynamic> countries = {
-  'Country': 'kco',
+  'All Countries': 'kco',
   "Russia": 'ru',
   "Ukrain": "ua",
   "Kazakhstan": 'kz',

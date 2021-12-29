@@ -570,7 +570,8 @@ class _DatePickerDialogState extends State<DatePickerDialog>
     Form inputDatePicker() {
       return Form(
         key: _formKey,
-        autovalidate: _autoValidate.value,
+
+        // autovalidate: _autoValidate.value,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           height: orientation == Orientation.portrait

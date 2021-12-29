@@ -38,11 +38,12 @@ class _ChampsTeamDetailState extends State<ChampsTeamDetail> {
       model.getOdds(games, widget.team, widget.game);
     });
   }
-
+late TeamPreviosGameController teamPreviosGameController;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    teamPreviosGameController = Provider.of<TeamPreviosGameController>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: greyFourth,
@@ -62,6 +63,7 @@ class _ChampsTeamDetailState extends State<ChampsTeamDetail> {
           style: kAppbarTextStyle,
         ),
       ),
+      
       body: SingleChildScrollView(
         child: Consumer<TeamPreviosGameController>(
             builder: (context, model, child) {
@@ -72,6 +74,7 @@ class _ChampsTeamDetailState extends State<ChampsTeamDetail> {
           } else if (model.matchReponse.modelStatus ==
               UpcomingMatchStatus.idle) {
             List<UpComingGame> _previousGames = model.matchReponse.data;
+             List<double> _odds = model.oddsResponse.data;
             return Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -82,11 +85,13 @@ class _ChampsTeamDetailState extends State<ChampsTeamDetail> {
                     
                     onPressed: () {},
                   ),
-                  Consumer<TeamPreviosGameController>(
-                      builder: (context, model, child) {
-                    List<double> _odds = model.oddsResponse.data;
-                    debugPrint("THe odds Are ${model.oddsResponse.data}");
-                    return Container(
+                  // Consumer<TeamPreviosGameController>(
+                  //     builder: (context, model, child) {
+                  //   List<double> _odds = model.oddsResponse.data;
+                  //   debugPrint("THe odds Are ${model.oddsResponse.data}");
+                 
+        
+                     Container(
                         height: 170.0,
                         width: size.width,
                         color: greyFourth,
@@ -125,8 +130,8 @@ class _ChampsTeamDetailState extends State<ChampsTeamDetail> {
                                     style: TextStyle(
                                         color: Colors.red,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 17.0)));
-                  }),
+                                        fontSize: 17.0))),
+                  // }),
                   ExpansionTile(
                       title: const Text(
                         "Past odds",

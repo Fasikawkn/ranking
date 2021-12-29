@@ -23,8 +23,8 @@ class _HomeState extends State<Home> {
   List<Widget> _buildScreens() {
     return const [
       HomePage(),
-      ChampsTopTeams(),
       ChampsFavoriteTeams(),
+      ChampsTopTeams(),
     ];
   }
 

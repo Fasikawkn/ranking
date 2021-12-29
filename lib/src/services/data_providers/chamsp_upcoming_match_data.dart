@@ -67,8 +67,9 @@ class UpcomingGameDataProvider {
         return GameOdd(homeOd: '0', drawOd: "0", awayOd: "0");
       }
       final _odds = _jsonResponse['odds'] as Map<String, dynamic>;
-      final _bet365 = _odds['Bet365'] as Map<String, dynamic>;
+      final _bet365 = _odds['Bet365'];
       if (_bet365 == null) {
+        
         return GameOdd(homeOd: '0', drawOd: "0", awayOd: "0");
       }
       final _prematch = _bet365['prematch'] as List;

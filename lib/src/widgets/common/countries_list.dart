@@ -39,9 +39,8 @@ class _CountriesListState extends State<CountriesList> {
                             _indexValue = value;
                           });
                           Future.delayed(const Duration(milliseconds: 100));
-                         if(country.value != 'kco'){
-                            Navigator.of(context).pop(value);
-                         }
+                       
+                          Navigator.of(context).pop(value);
                         },
                       ))
                   .toList(),

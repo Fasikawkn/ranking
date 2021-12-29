@@ -5,7 +5,6 @@ import 'package:champs2022rank1ng/src/models/chmaps_custome_models.dart';
 import 'package:champs2022rank1ng/src/views/z_champs_views.dart';
 import 'package:champs2022rank1ng/src/widgets/common/countries_list.dart';
 import 'package:champs2022rank1ng/src/widgets/common/my_custom_date_picker.dart';
-import 'package:champs2022rank1ng/src/widgets/custom_shimer.dart';
 import 'package:champs2022rank1ng/src/widgets/z_champs_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +23,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  List<Widget> _buildShimmer() {
-    return [1, 2, 3, 4]
-        .map((widget) => const CustomShimmer.rectangular(height: 12))
-        .toList();
-  }
+
 
   DateTime _selectedDate = DateTime.now();
 
@@ -64,9 +59,16 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           builder: (context) => const CountriesList(),
                         );
-                        await Provider.of<UpcomingMatchModel>(context,
+                        debugPrint("The selected country code is $countryCode");
+                        if( countryCode == 'kco'){
+                           await Provider.of<UpcomingMatchModel>(context,
+                                listen: false).getUpcomingMatches('today');
+                        }else if(countryCode != null && countryCode != 'kco') {
+                              await Provider.of<UpcomingMatchModel>(context,
                                 listen: false)
                             .filterMatchesByCountry(countryCode, context);
+                        }
+                    
                       },
                     ),
                   )),
@@ -116,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 UpcomingMatchStatus.idle) {
               List<UpComingGame> _games = state.matchReponse.data;
 
-              return _games.isEmpty? const Center(child: Text("No Content"),): Column(
+              return _games.isEmpty? const Center(child: Text("No Matches!"),): Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _games
                     .map(
