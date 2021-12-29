@@ -84,6 +84,7 @@ class TeamPreviosGameController extends ChangeNotifier {
       } else {
         _odds.add(0);
       }
+      
       oddsResponse = UpcomingMatchReponse(
           data: _odds, modelStatus: UpcomingMatchStatus.idle);
     } on SocketException catch (e) {

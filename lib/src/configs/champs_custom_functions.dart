@@ -1,4 +1,5 @@
-import 'package:champs2022rank1ng/src/models/z_champs_models.dart';
+import 'dart:math';
+
 
 class CustomFunctions {
   static String getDate(String timeStamp) {
@@ -21,4 +22,12 @@ class CustomFunctions {
   //   }
   //   return _topTeams.sort((a,b) => a.)
   // }
+}
+
+double generateRandomDouble() {
+  double _randomDouble = ( Random().nextDouble() * 6)  + 1;
+  return _randomDouble.toPrecision(2);
+}
+extension Ex on double {
+  double toPrecision(int n) => double.parse(toStringAsFixed(n));
 }

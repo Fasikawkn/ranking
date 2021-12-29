@@ -57,7 +57,7 @@ class ChampsTeamLabel extends StatelessWidget {
                           name: game.home.name,
                           odd: snapshots.hasData
                               ? Text(
-                                  "${snapshots.data!.homeOd}",
+                                  snapshots.data!.homeOd == '0'? "1.01": snapshots.data!.homeOd,
                                   style: kAppbarTextStyle.copyWith(
                                       color: Colors.black),
                                 )
@@ -73,7 +73,7 @@ class ChampsTeamLabel extends StatelessWidget {
                           name: game.away.name,
                           odd: snapshots.hasData
                               ? Text(
-                                  "${snapshots.data!.awayOd}",
+                                    snapshots.data!.awayOd == '0'? "1.04": snapshots.data!.awayOd,
                                   style: kAppbarTextStyle.copyWith(
                                       color: Colors.black),
                                 )

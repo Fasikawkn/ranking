@@ -78,6 +78,7 @@ late TeamPreviosGameController teamPreviosGameController;
             return Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TeamFavNameOddImage(
                    game: widget.game,

@@ -22,6 +22,16 @@ class UpcomingMatchModel extends ChangeNotifier {
     notifyListeners();
   }
 
+   UpcomingMatchReponse _allReponse = UpcomingMatchReponse(
+      data: null, modelStatus: UpcomingMatchStatus.loading);
+
+  UpcomingMatchReponse get allReponse => _allReponse;
+
+  set allReponse(UpcomingMatchReponse response) {
+    _allReponse = response;
+    notifyListeners();
+  }
+
   UpcomingMatchReponse _topTeamsReponse = UpcomingMatchReponse(
       data: null, modelStatus: UpcomingMatchStatus.loading);
 
@@ -39,10 +49,26 @@ class UpcomingMatchModel extends ChangeNotifier {
       final _response = await repository.getUpcomingGame(date);
 
       if (_response is List<UpComingGame>) {
+        List<UpComingGame> games = _response;
+        List<UpComingGame> _upcomingGames =[];
+      for (int i = 0; i < 50; i++) {
+        UpComingGame _upcomingGame = games[i];
+        final _response = await getOdd(_upcomingGame.gameId);
+        if (_response.homeOd != "0" || _response.awayOd != '0') {
+          _upcomingGames.add(_upcomingGame);
+        }
+      }
         matchReponse = UpcomingMatchReponse(
-            data: _response, modelStatus: UpcomingMatchStatus.idle);
+            data: _upcomingGames, modelStatus: UpcomingMatchStatus.idle);
+         allReponse = UpcomingMatchReponse(
+            data: _upcomingGames, modelStatus: UpcomingMatchStatus.idle);
       } else {
+
         matchReponse = UpcomingMatchReponse(
+            data: null,
+            modelStatus: UpcomingMatchStatus.error,
+            error: FormatError('Something went wrong'));
+              allReponse = UpcomingMatchReponse(
             data: null,
             modelStatus: UpcomingMatchStatus.error,
             error: FormatError('Something went wrong'));
@@ -52,10 +78,18 @@ class UpcomingMatchModel extends ChangeNotifier {
           data: null,
           modelStatus: UpcomingMatchStatus.error,
           error: ConnectionError('Connection error'));
+           allReponse = UpcomingMatchReponse(
+          data: null,
+          modelStatus: UpcomingMatchStatus.error,
+          error: ConnectionError('Connection error'));
     } catch (e) {
       print("Date fetch error is ");
       print(e.toString());
       matchReponse = UpcomingMatchReponse(
+          data: null,
+          modelStatus: UpcomingMatchStatus.error,
+          error: FormatError('Something went wrong'));
+           allReponse = UpcomingMatchReponse(
           data: null,
           modelStatus: UpcomingMatchStatus.error,
           error: FormatError('Something went wrong'));
@@ -71,10 +105,10 @@ class UpcomingMatchModel extends ChangeNotifier {
       topTeamsReponse = UpcomingMatchReponse(
           data: null, modelStatus: UpcomingMatchStatus.loading);
       List<TopTeam> _topTeams = [];
-      for (int i = 0; i < 30; i++) {
+      for (int i = 0; i < games.length; i++) {
         UpComingGame _upcomingGame = games[i];
         final _response = await getOdd(_upcomingGame.gameId);
-        if (_response is GameOdd) {
+        if (_response.homeOd != "0" || _response.awayOd != '0') {
           TopTeam _topTeam1 = TopTeam(
             game: _upcomingGame,
             name: _upcomingGame.home.name,
@@ -113,29 +147,31 @@ class UpcomingMatchModel extends ChangeNotifier {
   }
 
   Future filterMatchesByCountry(
-      String countryCode, BuildContext context) async {
+      String countryCode, List<UpComingGame> games) async {
     print('cc is $countryCode');
     try {
       matchReponse = UpcomingMatchReponse(
           data: null, modelStatus: UpcomingMatchStatus.loading);
-      await getUpcomingMatches('today');
-      UpcomingMatchReponse _response =
-          Provider.of<UpcomingMatchModel>(context, listen: false).matchReponse;
-      print("The countrie filtered is ${_response.data}");
-      List<UpComingGame> _countryGames = [];
-      if (_response.data is List) {
-        List<UpComingGame> games = _response.data;
+      // await getUpcomingMatches('today');
+      // UpcomingMatchReponse _response =
+      //     Provider.of<UpcomingMatchModel>(context, listen: false).matchReponse;
+      // print("The countrie filtered is ${_response.data}");
+      if(countryCode == 'kco'){
+         matchReponse = UpcomingMatchReponse(
+          data: games, modelStatus: UpcomingMatchStatus.idle);
+      }
+     else{
+        List<UpComingGame> _countryGames = [];
         for (int i = 0; i < games.length; i++) {
           UpComingGame _game = games[i];
-          print(_game.league.cc);
+         
           if (_game.league.cc == countryCode) {
             _countryGames.add(_game);
           }
         }
-      }
-      print("the filtered country is $_countryGames");
       matchReponse = UpcomingMatchReponse(
           data: _countryGames, modelStatus: UpcomingMatchStatus.idle);
+     }
     } catch (e) {
       topTeamsReponse = matchReponse = UpcomingMatchReponse(
         data: null,

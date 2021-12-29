@@ -60,13 +60,13 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => const CountriesList(),
                         );
                         debugPrint("The selected country code is $countryCode");
-                        if( countryCode == 'kco'){
-                           await Provider.of<UpcomingMatchModel>(context,
-                                listen: false).getUpcomingMatches('today');
-                        }else if(countryCode != null && countryCode != 'kco') {
-                              await Provider.of<UpcomingMatchModel>(context,
-                                listen: false)
-                            .filterMatchesByCountry(countryCode, context);
+                         if(countryCode != null) {
+                          final model =      Provider.of<UpcomingMatchModel>(context,
+                                listen: false);
+                          if(model.matchReponse.data is List){
+                              await model.filterMatchesByCountry(countryCode, model.allReponse.data);
+                          }
+                            
                         }
                     
                       },

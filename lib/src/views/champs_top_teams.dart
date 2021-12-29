@@ -27,7 +27,7 @@ class _ChampsTopTeamsState extends State<ChampsTopTeams> {
 
   _getTopTeams() async {
     final _matchesResponse =
-        Provider.of<UpcomingMatchModel>(context, listen: false).matchReponse;
+        Provider.of<UpcomingMatchModel>(context, listen: false).allReponse;
     if (_matchesResponse.data is List) {
       Provider.of<UpcomingMatchModel>(context, listen: false)
           .getTopTeams(_matchesResponse.data);
